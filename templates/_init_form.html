@@ -1,0 +1,22 @@
+<!-- Форма для запуска приключения. Вынесена в отдельный файл для удобства работы -->
+<form action="" method="post" class="mt-5">
+    {{ form.hidden_tag() }}
+
+    <div class="mt-3">
+        {{ form.width.label(class_="mb-2") }}
+        {{ form.width(size=32,class_="form-control",placeholder=form.width.name) }}
+        {% for error in form.width.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+
+    <div class="mt-3">
+        {{ form.height.label(class_="mb-2") }}
+        {{ form.height(size=32,class_="form-control",placeholder=form.height.name) }}
+        {% for error in form.height.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+
+    <p class="mt-4">{{ form.submit_init(class_="btn btn-primary") }}</p>
+</form>

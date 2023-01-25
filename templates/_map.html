@@ -1,0 +1,25 @@
+<h5 class="mt-5 mb-2 card-title">Карта приключений</h5>
+<h6 class="card-title mb-4 text-muted">Вы в <i class="text-info">голубой</i> комнате. Надо попасть в <i
+        class="text-warning">желтую</i></h6>
+<table class="table table-hover table-striped table-bordered">
+    {% for x in range (current_adventure.world|length) %}
+    <tr>
+        {% for y in range(current_adventure.world[x]|length) %}
+        {% for key, value in current_adventure.world[x][y].items() %}
+        {% if value == current_adventure.current_position and current_adventure.current_position ==
+        current_adventure.final_position %}
+        <td class="bg-success" id="{{ value[0] }}-{{ value[1] }}">
+            {% elif value == current_adventure.current_position %}
+        <td class="bg-info" id="{{ value[0] }}-{{ value[1] }}">
+            {% elif value == current_adventure.final_position %}
+        <td class="bg-warning" id="{{ value[0] }}-{{ value[1] }}">
+            {% else %}
+        <td id="{{ value[0] }}-{{ value[1] }}">
+            {% endif %}
+            {{ key }}
+        </td>
+        {% endfor %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>

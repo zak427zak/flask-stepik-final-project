@@ -1,0 +1,28 @@
+<!-- Форма для совершения "шага". Вынесена в отдельный файл для удобства работы -->
+<h5 class="mt-5 card-title">Сделай свой шаг, герой</h5>
+<form action="" method="post" class="mt-3">
+    {{ move_form.hidden_tag() }}
+
+    <div class="mt-3">
+        {{ move_form.way.label(class_="mb-2") }}
+        {{ move_form.way(cols=50,rows=4,class_="form-control",placeholder=move_form.way.name) }}
+        {% for error in move_form.way.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+
+    <div class="mt-3">
+        {{ move_form.number_steps.label(class_="mb-2") }}
+        {{ move_form.number_steps(size=32,class_="form-control",placeholder=move_form.number_steps.name) }}
+        {% for error in move_form.number_steps.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </div>
+
+    <!-- Если игра окончена - то не даем больше совершать шагов -->
+    {% if current_adventure.is_finished %}
+    <p class="mt-4 disabled">{{ move_form.submit_move(class_="btn btn-primary disabled") }}</p>
+    {% else %}
+    <p class="mt-4">{{ move_form.submit_move(class_="btn btn-primary") }}</p>
+    {% endif %}
+</form>

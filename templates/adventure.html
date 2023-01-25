@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+<!-- Шаблон приключения -->
+{% block content %}
+<div class="container">
+
+    <!-- Блок навигации вверху экрана -->
+    <div class="row mt-3 mb-4">
+        <div class="col-12 text-center">
+            <a class="btn btn-primary text-white" href="{{ url_for('index') }}">Вернуться на главную</a>
+            <a class="btn btn btn-danger text-white"
+               href="{{ url_for('rerun', width=current_adventure.width, height=current_adventure.height) }}">Переиграть</a>
+        </div>
+    </div>
+
+    <!-- Сообщения для вывода текстовой информации по ходу игры -->
+    {% include "_flash_messages.html" %}
+
+    <!-- Подключаем форму для совершения шагов -->
+    <div class="row">
+        <div class="col-6">
+            {% include "_move_form.html" %}
+        </div>
+    </div>
+
+    <!-- Подключаем форму для отображения карты мира -->
+    <div class="row">
+        <div class="col-12">
+            {% include "_map.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

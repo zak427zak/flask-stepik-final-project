@@ -1,25 +1,55 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, redirect, url_for
+from flask_bootstrap import Bootstrap
 
 from config import Config
-from forms import MainForm
+from forms import MoveForm, InitGameWorldForm
+from logic import Adventure
 
 app = Flask(__name__)
 app.config.from_object(Config)
+Bootstrap(app)
 
 
-@app.route("/", methods=["GET"])
-@app.route("/index", methods=["GET"])
+# Стартовый экран игры. Здесь происходит инициализация логики приключения (класс Adventure)
+@app.route("/", methods=["GET", "POST"])
+@app.route("/index", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
+    init_form = InitGameWorldForm()
+    if init_form.validate_on_submit() and init_form.submit_init.data:
+        Adventure(int(init_form.width.data), int(init_form.height.data))
+        return redirect(url_for('adventure'))
+    return render_template("index.html", form=init_form)
 
 
-@app.route("/choose-your-destiny", methods=["POST", "GET"])
-def choose_your_destiny():
-    form = MainForm()
-    if form.validate_on_submit():
-        return render_template("game.html", form=form)
+# Перезапуск приключения (выбранные при инициализации ширина и высота сохраняться)
+@app.route("/rerun/<int:width>/<int:height>", methods=["GET"])
+def rerun(width, height):
+    Adventure(width, height)
+    return redirect(url_for('adventure'))
+
+
+# "Шаг" в приключении и вытекающая из него логика
+@app.route("/adventure", methods=["GET", "POST"])
+def adventure():
+    move_form = MoveForm()
+    current_adventure = Adventure()
+
+    if move_form.validate_on_submit() and move_form.submit_move.data:
+        answer = current_adventure.make_step(int(move_form.number_steps.data), int(move_form.way.data))
+        flash(answer[0])
+        return render_template("adventure.html", move_form=move_form, current_adventure=current_adventure,
+                               alert_type=answer[1])
     else:
-        return render_template("game.html", form=form)
+        print(current_adventure.current_position)
+        print(current_adventure.final_position)
+        print(current_adventure.world)
+        flash(
+            f'Вчерашний поход к барону явно удался. Сейчас вы в пыльной непонятной комнате '
+            f'{current_adventure.current_position[0]}-{current_adventure.current_position[1]}, '
+            f'и ваше самочувствие оставляет желать лучшего.\nВы чувствуете, что вам необходимо попасть в комнату '
+            f'{current_adventure.final_position[0]}-{current_adventure.final_position[1]}')
+        return render_template("adventure.html", move_form=move_form, current_adventure=current_adventure,
+                               alert_type="info")
 
 
 if __name__ == "__main__":

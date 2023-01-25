@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+<!-- Главная страница с включением формы для запуска приключения -->
+{% block content %}
+<div class="container text-center h-100">
+    <div class="row h-100">
+        <div class="col-12 h-100">
+            <h1 class="mt-5 mb-2 card-title">Привет, герой!</h1>
+            <h6 class="card-title mb-4 text-muted">Приключение скоро начнется.<br>Задай размеры мира, и отправляйся в путь</h6>
+            <div class="d-flex align-items-center justify-content-center">
+                {% include "_init_form.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
