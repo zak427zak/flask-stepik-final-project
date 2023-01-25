@@ -1,12 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, SelectField, IntegerField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms import SubmitField, SelectField, IntegerField, BooleanField
+from wtforms.validators import DataRequired, NumberRange, AnyOf
 
 
 # Форма для инициализации приключения
 class InitGameWorldForm(FlaskForm):
     width = IntegerField('Введите ширину', name="Ширина", validators=[NumberRange(min=2, max=15), DataRequired()])
     height = IntegerField('Введите высоту', name="Высота", validators=[NumberRange(min=2, max=15), DataRequired()])
+    is_step_counter_on = BooleanField('Будем считать шаги?', default=False, name='Счетчик шагов',
+                                      validators=[AnyOf([True, False])])
     submit_init = SubmitField('Начать приключение!')
 
 

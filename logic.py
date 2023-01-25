@@ -17,13 +17,15 @@ class SingletonMeta(type):
 
 
 class Adventure(metaclass=SingletonMeta):
-    def __init__(self, width=4, height=4):
+    def __init__(self, width=4, height=4, step_counter=False):
         self.world = None
         self.final_position = None
         self.current_position = None
         self.width = width
         self.height = height
         self.generate_game()
+        self.is_step_counter_on = step_counter
+        self.step_count = 0
         self.is_finished = False
 
     # Генерация мира, финальной и стартовой комнат
@@ -68,6 +70,10 @@ class Adventure(metaclass=SingletonMeta):
                 is_success = True
 
         if is_success:
+
+            if self.is_step_counter_on:
+                self.step_count += 1
+
             if self.check_win():
                 alert_type = "success"
                 return "Вы успешно добрались до цели, поздравляю!\nИгра окончена: можете переиграть её заново, " \

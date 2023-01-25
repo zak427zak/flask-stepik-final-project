@@ -18,5 +18,10 @@
         {% endfor %}
     </div>
 
+    <div class="mt-3">
+        {{ form.is_step_counter_on() }}
+        {{ form.is_step_counter_on.label }}
+    </div>
+
     <p class="mt-4">{{ form.submit_init(class_="btn btn-primary") }}</p>
 </form>

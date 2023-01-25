@@ -6,9 +6,14 @@
     <!-- Блок навигации вверху экрана -->
     <div class="row mt-3 mb-4">
         <div class="col-12 text-center">
-            <a class="btn btn-primary text-white" href="{{ url_for('index') }}">Вернуться на главную</a>
-            <a class="btn btn btn-danger text-white"
+            <a class="btn btn-primary text-white float-start" href="{{ url_for('index') }}">Вернуться на главную</a>
+            <a class="btn btn btn-danger text-white float-start ms-2"
                href="{{ url_for('rerun', width=current_adventure.width, height=current_adventure.height) }}">Переиграть</a>
+            {% if current_adventure.is_step_counter_on %}
+            <p class="btn btn-info mb-0 float-end">
+                Шагов <span class="badge text-bg-secondary">{{ current_adventure.step_count }}</span>
+            </p>
+            {% endif %}
         </div>
     </div>
 

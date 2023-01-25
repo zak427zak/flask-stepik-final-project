@@ -16,7 +16,7 @@ Bootstrap(app)
 def index():
     init_form = InitGameWorldForm()
     if init_form.validate_on_submit() and init_form.submit_init.data:
-        Adventure(int(init_form.width.data), int(init_form.height.data))
+        Adventure(int(init_form.width.data), int(init_form.height.data), init_form.is_step_counter_on.data)
         return redirect(url_for('adventure'))
     return render_template("index.html", form=init_form)
 
@@ -40,14 +40,10 @@ def adventure():
         return render_template("adventure.html", move_form=move_form, current_adventure=current_adventure,
                                alert_type=answer[1])
     else:
-        print(current_adventure.current_position)
-        print(current_adventure.final_position)
-        print(current_adventure.world)
-        flash(
-            f'Вчерашний поход к барону явно удался. Сейчас вы в пыльной непонятной комнате '
-            f'{current_adventure.current_position[0]}-{current_adventure.current_position[1]}, '
-            f'и ваше самочувствие оставляет желать лучшего.\nВы чувствуете, что вам необходимо попасть в комнату '
-            f'{current_adventure.final_position[0]}-{current_adventure.final_position[1]}')
+        flash(f'Вчерашний поход к барону явно удался. Сейчас вы в пыльной непонятной комнате '
+              f'{current_adventure.current_position[0]}-{current_adventure.current_position[1]}, '
+              f'и ваше самочувствие оставляет желать лучшего.\nВы чувствуете, что вам необходимо попасть в комнату '
+              f'{current_adventure.final_position[0]}-{current_adventure.final_position[1]}')
         return render_template("adventure.html", move_form=move_form, current_adventure=current_adventure,
                                alert_type="info")
 
